@@ -40,7 +40,7 @@ main = do
     putStrLn $ "Project home in: " <> encodeString prjHome
     (ExitSuccess, npmBin) <- second T.strip <$> shellStrict "npm bin" empty
     let uglifyJsBin = fromText npmBin </> "uglifyjs"
-    True <- testfile uglifyJsBin
+--    True <- testfile uglifyJsBin
     putStrLn $ "Found uglifyjs in: " <> encodeString uglifyJsBin
 
     (ExitSuccess,pscLoc) <- shellStrict "which psc" empty
@@ -79,10 +79,11 @@ main = do
         pmConvert pm = ["-m", pm]
         bundleCmd = unwords ("psc-bundle" : pscBundleArgs)
     (ExitSuccess, jsContent) <- shellStrict (T.pack bundleCmd) empty
-    (ExitSuccess, jsOptimized) <- procStrict
-        (toText' uglifyJsBin)
-        ["-c", "-m"]
-        (select (textToLines jsContent))
+    let jsOptimized = jsContent
+--    (ExitSuccess, jsOptimized) <- procStrict
+--        (toText' uglifyJsBin)
+--        ["-c", "-m"]
+--        (select (textToLines jsContent))
     cd cwd
     let targetFile = "KanColleHelpers.js"
         targetFileNode = "KanColleHelpersN.js"
